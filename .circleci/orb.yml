@@ -1,0 +1,21 @@
+version: 2.1
+
+orbs:
+  ecs-tools: foobar/fantasticorp-ecs-tools@0.0.1
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - ecs-tools/build
+      - ecs-tools/test:
+          requires:
+            - ecs-tools/build
+      - ecs-tools/deploy:
+          context: org-global
+          requires:
+            - ecs-tools/test
+          filters:
+            branches:
+              only:
+                - master

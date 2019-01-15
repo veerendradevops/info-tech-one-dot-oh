@@ -1,0 +1,8 @@
+uwsgi:
+  image: "chriscircleci/info-tech-one-dot-oh-uwsgi:d2f60f9a9b76a8eb3c48b541566ae63dd8a3be83"
+nginx:
+  image: "chriscircleci/info-tech-one-dot-oh-nginx:d2f60f9a9b76a8eb3c48b541566ae63dd8a3be83"
+  links:
+    - uwsgi
+  ports:
+    - "1234:1234"

@@ -1,0 +1,88 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/info-tech-one-dot-oh
+    environment:
+      IMAGE_TAG: ${CIRCLE_SHA1}
+
+    # In 2.0, we specify our Ruby version by using a public Docker image
+    docker:
+      - image: circleci/python:3.6
+
+    steps:
+      - checkout
+
+      - setup_remote_docker:
+          reusable: true
+      
+      - run: docker build -t chriscircleci/info-tech-one-dot-oh-uwsgi:${CIRCLE_SHA1} uwsgi
+      - run: docker build -t chriscircleci/info-tech-one-dot-oh-nginx:${CIRCLE_SHA1} nginx
+      
+
+      #push docker iamge to docker hub
+      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - run: docker push chriscircleci/info-tech-one-dot-oh-uwsgi:${CIRCLE_SHA1}
+      - run: docker push chriscircleci/info-tech-one-dot-oh-nginx:${CIRCLE_SHA1}
+
+
+
+
+  test:
+    working_directory: ~/info-tech-one-dot-oh
+    docker:
+      - image: circleci/python:3.6
+
+    steps:
+      - checkout
+
+      - setup_remote_docker:
+          reusable: true
+
+      # - attach_workspace:
+      #   at: /var/lib/docker
+      - run: docker pull chriscircleci/info-tech-one-dot-oh-uwsgi:${CIRCLE_SHA1}
+      - run: docker pull chriscircleci/info-tech-one-dot-oh-nginx:${CIRCLE_SHA1}
+      - run: docker build -t info-tech-one-dot-oh-test test
+      - run: echo ${CIRCLE_BUILD_NUM} > test_container_name
+      - run: docker-compose -p ${CIRCLE_BUILD_NUM} up -d
+      - run: docker run --link ${CIRCLE_BUILD_NUM}_nginx_1:nginx --name $(cat test_container_name) info-tech-one-dot-oh-test
+     
+      - run:
+          when: always
+          command: |
+            mkdir test-reports
+            docker cp $(cat test_container_name):/nosetests.xml test-reports/.
+            docker-compose kill || true
+      
+      - store_artifacts:
+            path: test-reports
+
+      - store_test_results:
+          path: test-reports/
+
+  deploy:
+    name: Deploy to ECS
+    working_directory: ~/info-tech-one-dot-oh
+    docker:
+      - image: rhinogram/node-awscli
+
+    steps:
+      - checkout
+
+      - run: script/deploy.sh prod
+
+workflows:
+  version: 2
+  test-and-deploy:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+      - deploy:
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - master
