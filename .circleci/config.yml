@@ -71,7 +71,7 @@ jobs:
 
     steps:
       - checkout
-      - aws-cli/install
+    
       - aws-cli/configure:
           aws-access-key-id: $ACCESS
           aws-region: $REGION
