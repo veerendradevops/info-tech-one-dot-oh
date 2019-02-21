@@ -40,8 +40,8 @@ jobs:
 
       # - attach_workspace:
       #   at: /var/lib/docker
-      - run: docker pull chriscircleci/info-tech-one-dot-oh-uwsgi:${CIRCLE_SHA1}
-      - run: docker pull chriscircleci/info-tech-one-dot-oh-nginx:${CIRCLE_SHA1}
+      - run: docker pull veerendradevops/circleci-uwsgi:${CIRCLE_SHA1}
+      - run: docker pull veerendradevops/circleci-nginx:${CIRCLE_SHA1}
       - run: docker build -t info-tech-one-dot-oh-test test
       - run: echo ${CIRCLE_BUILD_NUM} > test_container_name
       - run: docker-compose -p ${CIRCLE_BUILD_NUM} up -d
