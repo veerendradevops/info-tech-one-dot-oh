@@ -15,14 +15,14 @@ jobs:
       - setup_remote_docker:
           reusable: true
       
-      - run: docker build -t chriscircleci/info-tech-one-dot-oh-uwsgi:${CIRCLE_SHA1} uwsgi
-      - run: docker build -t chriscircleci/info-tech-one-dot-oh-nginx:${CIRCLE_SHA1} nginx
+      - run: docker build -t veerendradevops/circleci-uwsgi:${CIRCLE_SHA1} uwsgi
+      - run: docker build -t veerendradevops/circleci-nginx:${CIRCLE_SHA1} nginx
       
 
       #push docker iamge to docker hub
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
-      - run: docker push chriscircleci/info-tech-one-dot-oh-uwsgi:${CIRCLE_SHA1}
-      - run: docker push chriscircleci/info-tech-one-dot-oh-nginx:${CIRCLE_SHA1}
+      - run: docker push veerendradevops/circleci-uwsgi:${CIRCLE_SHA1}
+      - run: docker push veerendradevops/circleci-nginx:${CIRCLE_SHA1}
 
 
 
