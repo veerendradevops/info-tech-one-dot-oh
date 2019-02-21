@@ -1,4 +1,7 @@
 version: 2
+orbs:
+    aws-cli: circleci/aws-cli@0.1.4
+    aws-ecs: circleci/aws-ecs@0.0.3
 jobs:
   build:
     working_directory: ~/info-tech-one-dot-oh
@@ -68,7 +71,10 @@ jobs:
 
     steps:
       - checkout
-
+      - aws-cli/install
+      - aws-cli/configure:
+          aws-access-key-id: $ACCESS
+          aws-region: $REGION
       - run: script/deploy.sh prod
 
 workflows:
