@@ -5,7 +5,7 @@
 # NGINX_TAG="info_tech_nginx"
 # UWSGI_TAG="info_tech_uwsgi"
 
-DOCKER_USER="chriscircleci"
+DOCKER_USER="veerendradevops"
 GH_REPO="info-tech-one-dot-oh"
 
 # Build nginx

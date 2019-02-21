@@ -1,7 +1,7 @@
 uwsgi:
-  image: "chriscircleci/info-tech-one-dot-oh-uwsgi:${CIRCLE_SHA1}"
+  image: "veerendradevops/circleci-uwsgi:${CIRCLE_SHA1}"
 nginx:
-  image: "chriscircleci/info-tech-one-dot-oh-nginx:${CIRCLE_SHA1}"
+  image: "veerendradevops/circleci-nginx:${CIRCLE_SHA1}"
   links:
     - uwsgi
   ports:

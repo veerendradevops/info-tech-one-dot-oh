@@ -17,7 +17,7 @@ task_definition() {
 [
     {
         "name": "uwsgi",
-        "image": "chriscircleci/info-tech-one-dot-oh-uwsgi:$tag",
+        "image": "veerendradevops/circleci-uwsgi:$tag",
         "essential": true,
         "memory": 200,
         "cpu": 10
@@ -27,7 +27,7 @@ task_definition() {
         "links": [
             "uwsgi"
         ],
-        "image": "chriscircleci/info-tech-one-dot-oh-nginx:$tag",
+        "image": "veerendradevops/circleci-nginx:$tag",
         "portMappings": [
             {
                 "containerPort": 8000
