@@ -43,9 +43,9 @@ jobs:
       - run: docker pull veerendradevops/circleci-uwsgi:${CIRCLE_SHA1}
       - run: docker pull veerendradevops/circleci-nginx:${CIRCLE_SHA1}
       - run: docker build -t info-tech-one-dot-oh-test test
-      - run: echo ${CIRCLE_BUILD_NUM} > test_container_name
+      - run: echo ${CIRCLE_BUILD_NUM}test > test_container_name
       - run: docker-compose -p ${CIRCLE_BUILD_NUM} up -d
-      - run: docker run --link ${CIRCLE_BUILD_NUM}_nginx_1:nginx --name $(cat test_container_name)-info-tech-one-dot-oh-test
+      - run: docker run --link ${CIRCLE_BUILD_NUM}_nginx_1:nginx --name $(cat test_container_name) info-tech-one-dot-oh-test
      
       - run:
           when: always
